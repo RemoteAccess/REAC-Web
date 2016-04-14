@@ -34,6 +34,15 @@ def register(request):
 
 	return render(request, 'register.html', {'form' : form})
 
+def login(request):
+	if request.method == 'POST' :
+		form = RegistrationForm(request.POST)
+		if request.user.is_authenticated():
+			return HttpResponseRedirect('/home')
+	else:
+		form = RegistrationForm(request.POST)
+
+	return render(request, 'login.html', {'form' : form})
 
 
 def logout_page(request):

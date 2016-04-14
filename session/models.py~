@@ -10,5 +10,5 @@ class Client(models.Model):
 	client = models.ForeignKey(User,on_delete = models.CASCADE)
 	ip = models.CharField(max_length = 30)
 	def __str__(self):
-		return str(self.client.pk) + " : " + self.client.username + " ("+self.ip+")"
+		return str(self.client.pk) + " : " + self.client.username + " ("+ip+")"
 

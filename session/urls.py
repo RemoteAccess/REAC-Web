@@ -2,9 +2,9 @@ from django.conf.urls import patterns, include, url
 from . import views
 
 urlpatterns = patterns('',
-    url(r'^login/$', 'django.contrib.auth.views.login'),
+    url(r'^$', 'django.contrib.auth.views.login'),
 		
-    url(r'^$', views.index),
+    url(r'^index/$', views.index),
     url(r'^logout/$', views.logout_page),
     url(r'^login/$', 'django.contrib.auth.views.login'), # If user is not login it will redirect to login page
     url(r'^register/$', views.register),

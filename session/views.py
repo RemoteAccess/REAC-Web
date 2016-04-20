@@ -15,6 +15,7 @@ from django.http import HttpResponse
 
 from models import Client
 from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
 
 # Create your views here.
 
@@ -80,10 +81,28 @@ def getip(request):
 				return HttpResponse("NotFound")
 	return HttpResponse("InvalidFormat")
 
+def setip(request):
+	if request.method == 'POST' and 'username' in request.POST and 'password' in request.POST:
+		_user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        	data = Client.objects.filter(client=user)
+       		if data is not None:
+				data.ip = request.POST['ip']
+				data.save()
+				return HttpResponse("Updated")
+	return HttpResponse("Error")
+
 def apilogin(request):
 	if request.method == 'POST' and 'username' in request.POST and 'password' in request.POST:
-		if True or request.user.is_authenticated():
+		user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        if user is not None:
 			return HttpResponse("loggedIn")
-		else:
-			return HttpResponse("Invalid Credential")
+		#Invalid Credential	
 	return HttpResponse("Invalid Format!")
+
+def apiAllIp(request):
+	clients = Client.objects.all()
+	mymap = []
+	for client in clients:
+		mymap.append({'ip':client.ip, 'name':client.client.username})
+	data = {'data':mymap}
+	return HttpResponse(JsonResponse(data).content)

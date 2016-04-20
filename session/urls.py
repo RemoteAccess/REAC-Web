@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     url(r'^home/$', views.home),
     url(r'^api/getemail', views.getemail),
     url(r'^api/getip', views.getip),
-    url(r'^api/setip', views.getip),
+    #url(r'^api/setip', views.setip),
     url(r'^api/login', views.apilogin),
+    url(r'^api/allip', views.apiAllIp),
+    
 )

@@ -13,6 +13,7 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.http import HttpResponse
 
+from django.contrib.auth import authenticate
 from models import Client
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
@@ -82,20 +83,24 @@ def getip(request):
 	return HttpResponse("InvalidFormat")
 
 def setip(request):
-	if request.method == 'POST' and 'username' in request.POST and 'password' in request.POST:
+	if request.method == 'POST' and 'username' in request.POST and 'password' in request.POST and 'ip' in request.POST:
 		_user = authenticate(username=request.POST['username'], password=request.POST['password'])
-        	data = Client.objects.filter(client=user)
-       		if data is not None:
+        	_data = Client.objects.filter(client=_user)
+       		if len(_data)>0:
+				data = _data[0]
 				data.ip = request.POST['ip']
 				data.save()
 				return HttpResponse("Updated")
+		return HttpResponse("Invalid Details")
 	return HttpResponse("Error")
 
 def apilogin(request):
 	if request.method == 'POST' and 'username' in request.POST and 'password' in request.POST:
-		user = authenticate(username=request.POST['username'], password=request.POST['password'])
-        if user is not None:
-			return HttpResponse("loggedIn")
+			user = authenticate(username=request.POST['username'], password=request.POST['password'])
+        		if user is not None:
+				return HttpResponse("loggedIn")
+			return HttpResponse("Invalid Details")
+		
 		#Invalid Credential	
 	return HttpResponse("Invalid Format!")
 
